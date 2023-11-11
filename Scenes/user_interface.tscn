@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://xveaj1gau14t"]
+
+[ext_resource type="Script" path="res://Scripts/GameplayUI.cs" id="1_acphx"]
+[ext_resource type="Texture2D" uid="uid://dmsqfnfjpdmvx" path="res://Sprites/UI/progressBar.png" id="2_ldlap"]
+
+[node name="UserInterface" type="CanvasLayer"]
+
+[node name="GameplayUI" type="Control" parent="." node_paths=PackedStringArray("_BonusProgressBar")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_acphx")
+_BonusProgressBar = NodePath("TextureProgressBar")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="GameplayUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -482.0
+offset_top = -190.0
+offset_right = 30.0
+offset_bottom = 322.0
+grow_horizontal = 0
+texture_under = ExtResource("2_ldlap")
+texture_progress = ExtResource("2_ldlap")
+tint_over = Color(0.843137, 1, 1, 1)
+tint_progress = Color(0.690196, 1, 0.670588, 1)
+
+[node name="OnPlayerHitDarken" type="ColorRect" parent="GameplayUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.164706)

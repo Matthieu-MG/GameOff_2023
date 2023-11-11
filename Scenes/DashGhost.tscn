@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://caowdt0tbmt14"]
+
+[ext_resource type="Texture2D" uid="uid://co438co7oq8ul" path="res://icon.svg" id="1_37aq1"]
+[ext_resource type="Shader" uid="uid://gryf65eok7fx" path="res://Shaders/DashGhost.tres" id="1_x5c5r"]
+[ext_resource type="Script" path="res://Scripts/DashGhost.cs" id="2_cmq2j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6wegj"]
+resource_local_to_scene = true
+resource_name = "DashGhost"
+shader = ExtResource("1_x5c5r")
+shader_parameter/tint = Color(0.329412, 0.384314, 0, 1)
+
+[node name="DashGhost" type="Sprite2D"]
+material = SubResource("ShaderMaterial_6wegj")
+texture = ExtResource("1_37aq1")
+script = ExtResource("2_cmq2j")

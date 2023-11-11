@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://upvpcsvo86m4"]
+
+[ext_resource type="Script" path="res://Scripts/RespawnPoint.cs" id="1_kcob8"]
+[ext_resource type="Texture2D" uid="uid://co438co7oq8ul" path="res://icon.svg" id="2_ps05u"]
+[ext_resource type="Texture2D" uid="uid://ebn2rv8q28py" path="res://addons/controller_icons/assets/key/tab.png" id="3_46cbe"]
+[ext_resource type="Script" path="res://addons/controller_icons/objects/TextureRect.gd" id="4_eb68r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06r7u"]
+size = Vector2(32, 74)
+
+[node name="RespawnPoint" type="Node2D" node_paths=PackedStringArray("_ActionIcon")]
+script = ExtResource("1_kcob8")
+_ActionIcon = NodePath("Control/ControllerTextureRect")
+
+[node name="PromptToAssignRP" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PromptToAssignRP"]
+shape = SubResource("RectangleShape2D_06r7u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.195312, 0.207031)
+texture = ExtResource("2_ps05u")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -21.0
+offset_top = -53.0
+offset_right = 21.0
+offset_bottom = 21.0
+
+[node name="ControllerTextureRect" type="TextureRect" parent="Control"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+texture = ExtResource("3_46cbe")
+expand_mode = 1
+script = ExtResource("4_eb68r")
+path = "Rest"
+
+[connection signal="body_entered" from="PromptToAssignRP" to="." method="PromptRespawnPoint"]
+[connection signal="body_exited" from="PromptToAssignRP" to="." method="UnpromptRespawnPoint"]

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://eir7btk20xcp"]
+
+[ext_resource type="Script" path="res://Scripts/CameraFollowSwitch.cs" id="1_70kfy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x2yg6"]
+size = Vector2(20, 427)
+
+[node name="CameraFollowSwitch" type="Node2D"]
+script = ExtResource("1_70kfy")
+
+[node name="SwitchTrigger" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwitchTrigger"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_x2yg6")
+
+[connection signal="body_entered" from="SwitchTrigger" to="." method="OnBodyEnterred"]

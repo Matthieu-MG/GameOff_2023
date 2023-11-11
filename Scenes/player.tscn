@@ -1,0 +1,454 @@
+[gd_scene load_steps=39 format=3 uid="uid://jkxwxrjjmjhb"]
+
+[ext_resource type="Script" path="res://Scripts/PlayerMovement.cs" id="1_ceegm"]
+[ext_resource type="Texture2D" uid="uid://co438co7oq8ul" path="res://icon.svg" id="1_eiiak"]
+[ext_resource type="Shader" uid="uid://cytefjyndg6yw" path="res://Shaders/HitFlash.tres" id="2_blg26"]
+[ext_resource type="PackedScene" uid="uid://bvmcgiv5f73gh" path="res://Scenes/health_component.tscn" id="3_pjxrk"]
+[ext_resource type="PackedScene" uid="uid://2nhx70jkd3c4" path="res://Scenes/hitbox_component.tscn" id="4_qq3qh"]
+[ext_resource type="Texture2D" uid="uid://dre7n1mh3e1ro" path="res://Sprites/Animations/idleAnimationProtagonistSprite.png" id="6_rl512"]
+[ext_resource type="Texture2D" uid="uid://con3iuy6hxy35" path="res://Sprites/Animations/running_animation_protagonist_sprite.png" id="7_knsik"]
+[ext_resource type="PackedScene" uid="uid://5h4ob2dm67nu" path="res://Scenes/Dash.tscn" id="7_lkl6h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gtbod"]
+size = Vector2(90, 174)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6lelr"]
+resource_local_to_scene = true
+shader = ExtResource("2_blg26")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_qflof"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.5, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox Component/HitboxShape:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(66, 161)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(90, 174)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AttackArea/AtkHitBox:shape:size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(71.5, 108)]
+}
+
+[sub_resource type="Animation" id="Animation_a66w1"]
+resource_name = "ScaleDown"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AttackArea/AtkHitBox:shape:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(97.5, 118), Vector2(71.5, 108), Vector2(67.5, 80)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(97.5, 214.5), Vector2(90, 174), Vector2(65, 130)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox Component/HitboxShape:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(72, 187), Vector2(66, 161), Vector2(50, 123)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.4, 0.4), Vector2(0.3, 0.3)]
+}
+
+[sub_resource type="Animation" id="Animation_7d2e3"]
+resource_name = "ScaleUp"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.3, 0.3), Vector2(0.4, 0.4), Vector2(0.5, 0.5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox Component/HitboxShape:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(50, 123), Vector2(66, 161), Vector2(72, 187)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:shape:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(65, 130), Vector2(90, 174), Vector2(97.5, 214.5)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AttackArea/AtkHitBox:shape:size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(67.5, 80), Vector2(71.5, 108), Vector2(97.5, 118)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b38wa"]
+_data = {
+"RESET": SubResource("Animation_qflof"),
+"ScaleDown": SubResource("Animation_a66w1"),
+"ScaleUp": SubResource("Animation_7d2e3")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ysly3"]
+size = Vector2(71.5, 108)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5nqc0"]
+size = Vector2(55, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7el45"]
+size = Vector2(66, 161)
+
+[sub_resource type="Animation" id="Animation_1idse"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_q2ogn"]
+resource_name = "hitFlash"
+length = 1.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oyikd"]
+_data = {
+"RESET": SubResource("Animation_1idse"),
+"hitFlash": SubResource("Animation_q2ogn")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cml2k"]
+resource_local_to_scene = true
+shader = ExtResource("2_blg26")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sps1t"]
+atlas = ExtResource("6_rl512")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nwyam"]
+atlas = ExtResource("6_rl512")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_woc1k"]
+atlas = ExtResource("6_rl512")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqjee"]
+atlas = ExtResource("6_rl512")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lqam3"]
+atlas = ExtResource("6_rl512")
+region = Rect2(2048, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7mq0m"]
+atlas = ExtResource("6_rl512")
+region = Rect2(2560, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qbccn"]
+atlas = ExtResource("7_knsik")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kkpog"]
+atlas = ExtResource("7_knsik")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dlfn"]
+atlas = ExtResource("7_knsik")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0fgvy"]
+atlas = ExtResource("7_knsik")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7a155"]
+atlas = ExtResource("7_knsik")
+region = Rect2(2048, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4wef"]
+atlas = ExtResource("7_knsik")
+region = Rect2(2560, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q1a0e"]
+atlas = ExtResource("7_knsik")
+region = Rect2(3072, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54k4f"]
+atlas = ExtResource("7_knsik")
+region = Rect2(3584, 0, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0cym0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sps1t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nwyam")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_woc1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqjee")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lqam3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7mq0m")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qbccn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kkpog")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4dlfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0fgvy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7a155")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4wef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1a0e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54k4f")
+}],
+"loop": true,
+"name": &"running",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u7gmh"]
+size = Vector2(53, 193)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tel6g"]
+size = Vector2(48, 193)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animPlayer", "_animSprite", "HitBox", "LeftHitCheck", "RightHitCheck", "AtkArea", "_dash") groups=["Player"]]
+script = ExtResource("1_ceegm")
+_animPlayer = NodePath("AnimationPlayer")
+_animSprite = NodePath("AnimatedSprite2D")
+HitBox = NodePath("Hitbox Component")
+LeftHitCheck = NodePath("LeftHitCheck")
+RightHitCheck = NodePath("RightHitCheck")
+KnockbackForce = 600.0
+BonusAtkPoints = 10.0
+AtkArea = NodePath("AttackArea")
+OriginalSpeed = 800.0
+_dash = NodePath("Dash")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(6.25, 3.75)
+shape = SubResource("RectangleShape2D_gtbod")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_6lelr")
+position = Vector2(9.31323e-10, 6.5)
+scale = Vector2(0.108, 0.191)
+texture = ExtResource("1_eiiak")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b38wa")
+}
+
+[node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(45, -3)
+
+[node name="AtkHitBox" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(15, 8)
+shape = SubResource("RectangleShape2D_ysly3")
+
+[node name="CeilingCheck" type="Area2D" parent="."]
+position = Vector2(-1, -62)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CeilingCheck"]
+position = Vector2(11.5, -4)
+shape = SubResource("RectangleShape2D_5nqc0")
+
+[node name="Health Component" parent="." node_paths=PackedStringArray("_hitFlash", "IFrameTimer") groups=["Player"] instance=ExtResource("3_pjxrk")]
+position = Vector2(0, 5)
+_hitFlash = NodePath("../HitFlashAnimationPlayer")
+IFrameTimer = NodePath("../IFrameTimer")
+
+[node name="Hitbox Component" parent="." instance=ExtResource("4_qq3qh")]
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox Component"]
+position = Vector2(9, 1.5)
+shape = SubResource("RectangleShape2D_7el45")
+
+[node name="HitFlashAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_oyikd")
+}
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_cml2k")
+position = Vector2(0, -1)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_0cym0")
+animation = &"running"
+
+[node name="IFrameTimer" type="Timer" parent="."]
+wait_time = 1.4
+one_shot = true
+
+[node name="LeftHitCheck" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftHitCheck"]
+position = Vector2(-26.5, 7.5)
+shape = SubResource("RectangleShape2D_u7gmh")
+
+[node name="Sprite2D" type="Sprite2D" parent="LeftHitCheck"]
+visible = false
+position = Vector2(-6, 7)
+scale = Vector2(0.0546875, 0.0625)
+texture = ExtResource("1_eiiak")
+flip_v = true
+
+[node name="RightHitCheck" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightHitCheck"]
+position = Vector2(24, 7.5)
+shape = SubResource("RectangleShape2D_tel6g")
+
+[node name="Sprite2D" type="Sprite2D" parent="RightHitCheck"]
+visible = false
+position = Vector2(6, 7)
+scale = Vector2(0.0546875, 0.0625)
+texture = ExtResource("1_eiiak")
+
+[node name="Dash" parent="." instance=ExtResource("7_lkl6h")]
+
+[connection signal="area_entered" from="AttackArea" to="." method="OnAttackLanded"]
+[connection signal="body_entered" from="CeilingCheck" to="." method="OnCeilingTouched"]
+[connection signal="body_exited" from="CeilingCheck" to="." method="OnCeilingExit"]
+[connection signal="area_entered" from="Hitbox Component" to="." method="OnPlayerHit"]
+[connection signal="timeout" from="IFrameTimer" to="." method="OnIFrameTimerTimeout"]
+[connection signal="area_entered" from="LeftHitCheck" to="." method="OnLeftHitAreaEntered"]
+[connection signal="area_entered" from="RightHitCheck" to="." method="OnRightHitAreaEntered"]

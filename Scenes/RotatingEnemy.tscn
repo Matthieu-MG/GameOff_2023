@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dghsisa6lmxl2"]
+
+[ext_resource type="Texture2D" uid="uid://co438co7oq8ul" path="res://icon.svg" id="1_f1f27"]
+[ext_resource type="Script" path="res://Scripts/RotatingEnemy.cs" id="1_s1jph"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_usgud"]
+
+[node name="RotatingEnemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_s1jph")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_usgud")
+
+[node name="Icon" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("1_f1f27")
