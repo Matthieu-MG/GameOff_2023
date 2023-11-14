@@ -9,6 +9,7 @@ public partial class PlayerMovement : CharacterBody2D
 	public Vector2 spawnPoint = new Vector2(0,-100);
 
 	float action;
+	public bool IsListeningToInput = true;
 	bool FaceRight = true;
 	[Export] AnimationPlayer _animPlayer;
 
@@ -48,6 +49,11 @@ public partial class PlayerMovement : CharacterBody2D
 	[Export] double BonusAtkPoints = 5;
 
 	[Export] Area2D AtkArea;
+
+	// Smasher Variables
+	[Export] Smasher smasher;
+	[Export] Area2D SmasherArea;
+	[Export] const int SMASHER_DMG = 150;
 	
 	// Horizontal Movement Variables
 	[Export] float OriginalSpeed = 350f;
@@ -58,6 +64,7 @@ public partial class PlayerMovement : CharacterBody2D
 	[Export] Dash _dash;
 	[Export] float dashSpeed = 4000;
 	[Export] float dashDuration = 0.2f;
+	bool DashPressed = false;
 
 	// Jump Variables
 	public static bool isGrounded;
@@ -102,6 +109,7 @@ public partial class PlayerMovement : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		Attack(delta);
+		Smash();
 		PlayerActivateBonus();
 		CheckBonusState();
 		GetScaleInput(ref ScaleInput, delta);
@@ -136,7 +144,7 @@ public partial class PlayerMovement : CharacterBody2D
 			IsKnockedBack = false;
 		}
 		#endregion
-		else
+		else if (IsListeningToInput || _dash.IsDashing())
 		{
 			#region Jump
 			if(coyote_timer > 0 && jumpBufferTimer > 0)
@@ -149,19 +157,23 @@ public partial class PlayerMovement : CharacterBody2D
 			#endregion
 
 			#region Run
-			// Gets X-axis movement Input -- Sets it to 1, -1 or 0 based on the value returned from GetAxis()
-			action = Input.GetAxis("Left", "Right");
-			GetDir(ref action);
+			if (!_dash.IsDashing())
+			{
+				// Gets X-axis movement Input -- Sets it to 1, -1 or 0 based on the value returned from GetAxis()
+				action = Input.GetAxis("Left", "Right");
+				GetDir(ref action);
 
-			vel.X = action * speed;
+				vel.X = action * speed;
+			}
 			#endregion
 
 			#region Dash
 			// Starts Dash, if Action was pressed, Player is not dashing already and Cooldown is over
-			if ( Input.IsActionJustPressed("Dash") && _dash.CanDash && !_dash.IsDashing())
+			DashPressed = Input.IsActionJustPressed("Dash");
+			if (DashPressed && _dash.CanDash && !_dash.IsDashing())
 			{
 				_dash.StartDash(dashDuration, GetCurrentSprite());
-
+				_animSprite.Play("dash");
 			}
 			// Dash
 			if (_dash.IsDashing())
@@ -253,6 +265,8 @@ public partial class PlayerMovement : CharacterBody2D
 		ScaleTimer -= delta;
 	}
 
+	#region Melee Methods
+
 	#region Attack Methods
 	// Handles behavior when Player wants to attack
 	private void Attack(double delta)
@@ -286,6 +300,34 @@ public partial class PlayerMovement : CharacterBody2D
 			}
 		}
 	}
+	#endregion
+
+	#region Smash Methods
+	private void Smash()
+	{
+		bool SmashPressed = Input.IsActionPressed("Smash");
+		if (SmashPressed && smasher.CanSmash && !smasher.IsSmashOnCooldown() && isGrounded)
+		{
+			smasher.StartSmash();
+		}
+	}
+
+	private void OnSmashHit(Area2D area)
+	{
+		GD.Print("Signal Trigerred by", area);
+		if (area.IsInGroup("BreakableBySmasher"))
+		{
+			Node ParentWall = area.GetParent();
+			ParentWall.QueueFree();
+		}
+		if (area.IsInGroup("Hit"))
+		{
+			HealthComponent health = (HealthComponent) area.GetParent().GetNode("Health Component");
+			health.OnHit(SMASHER_DMG);
+		}
+	}
+	#endregion
+
 	#endregion
 
 	// Checks and Assigns correct bonusState depending on the status of the points
@@ -341,13 +383,16 @@ public partial class PlayerMovement : CharacterBody2D
 	// Handles which Animation the AnimatedSprite2D should play
 	private void HandleAnimation()
 	{
-		if (action == 0)
+		if (!_dash.IsDashing())
 		{
-			_animSprite.Play("idle");
-		}
-		else
-		{
-			_animSprite.Play("running");
+			if (action == 0)
+			{
+				_animSprite.Play("idle");
+			}
+			else
+			{
+				_animSprite.Play("running");
+			}
 		}
 	}
 
@@ -355,7 +400,7 @@ public partial class PlayerMovement : CharacterBody2D
 	private Sprite2D GetCurrentSprite()
 	{
 		Sprite2D sprite2D = new Sprite2D();
-		sprite2D.Texture = _animSprite.SpriteFrames.GetFrameTexture(_animSprite.Animation, _animSprite.Frame);
+		sprite2D.Texture = _animSprite.SpriteFrames.GetFrameTexture("dash", _animSprite.Frame);
 		sprite2D.Scale = _animSprite.Scale;
 		if (!FaceRight)
 		{

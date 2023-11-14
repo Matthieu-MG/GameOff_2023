@@ -11,7 +11,7 @@ _ghostTimer = NodePath("GhostTimer")
 one_shot = true
 
 [node name="GhostTimer" type="Timer" parent="."]
-wait_time = 0.01
+wait_time = 0.03
 
 [connection signal="timeout" from="DurationTimer" to="." method="OnDurationTimerTimeout"]
 [connection signal="timeout" from="GhostTimer" to="." method="OnGhostTimerTimeout"]

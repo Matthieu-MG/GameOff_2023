@@ -73,6 +73,7 @@ public partial class Camera2D : Godot.Camera2D
 
 		if (IsSwitching)
 		{
+			/*
 			_t += (float) (0.2f * delta);
 			//pos = pos.Lerp(_player.Position, _t);
 
@@ -91,7 +92,7 @@ public partial class Camera2D : Godot.Camera2D
 			{
 				lerpPos.X = x_axisRestraint;
 			}
-			*/
+			
 			else
 				pos = pos.Lerp(lerpPos, _t);
 
@@ -102,6 +103,8 @@ public partial class Camera2D : Godot.Camera2D
 				IsSwitching = false;
 				_t = 0.0f;
 			}
+			*/
+			IsSwitching = false;
 		}
 
 		else

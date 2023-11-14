@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dqnr4ecm8cioo"]
+[gd_scene load_steps=15 format=3 uid="uid://dqnr4ecm8cioo"]
 
 [ext_resource type="Texture2D" uid="uid://ckyv22n0ta0a8" path="res://Sprites/Tiles/Tile.png" id="1_qbpnb"]
 [ext_resource type="PackedScene" uid="uid://jkxwxrjjmjhb" path="res://Scenes/player.tscn" id="2_66lh2"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://Scripts/GameManager.cs" id="9_r36jf"]
 [ext_resource type="PackedScene" uid="uid://upvpcsvo86m4" path="res://Scenes/respawn_point.tscn" id="10_pi16y"]
 [ext_resource type="PackedScene" uid="uid://dghsisa6lmxl2" path="res://Scenes/RotatingEnemy.tscn" id="11_ne8ic"]
+[ext_resource type="PackedScene" uid="uid://dtdf6gdhs5oik" path="res://Scenes/BreakableTiles.tscn" id="12_fgwaj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ftqdc"]
 texture = ExtResource("1_qbpnb")
@@ -89,4 +90,7 @@ script = ExtResource("9_r36jf")
 position = Vector2(1963, -227)
 
 [node name="RotatingEnemy" parent="." instance=ExtResource("11_ne8ic")]
-position = Vector2(218, -186)
+position = Vector2(267, -186)
+
+[node name="BreakableTiles" parent="." instance=ExtResource("12_fgwaj")]
+position = Vector2(100, -95)

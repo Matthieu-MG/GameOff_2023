@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://b67glc2lr7tco"]
+
+[ext_resource type="Script" path="res://Scripts/Smasher.cs" id="1_4gf30"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugbnp"]
+size = Vector2(172, 209)
+
+[node name="Smasher" type="Area2D" node_paths=PackedStringArray("SmashTimer", "SmashCooldownTimer")]
+position = Vector2(72, 0)
+script = ExtResource("1_4gf30")
+SmashDuration = 0.2
+SmashTimer = NodePath("SmashTimer")
+SmashCooldownDuration = 5.0
+SmashCooldownTimer = NodePath("CooldownTimer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3, -0.5)
+shape = SubResource("RectangleShape2D_ugbnp")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SmashTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="CooldownTimer" to="." method="OnCooldownTimerTimeout"]
+[connection signal="timeout" from="SmashTimer" to="." method="OnSmashEnd"]

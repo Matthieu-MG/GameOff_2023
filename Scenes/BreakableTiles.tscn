@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtdf6gdhs5oik"]
+
+[ext_resource type="Texture2D" uid="uid://ckyv22n0ta0a8" path="res://Sprites/Tiles/Tile.png" id="1_ho0nr"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sw333"]
+texture = ExtResource("1_ho0nr")
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_tg8sj"]
+physics_layer_0/collision_layer = 7
+physics_layer_0/collision_mask = 7
+sources/0 = SubResource("TileSetAtlasSource_sw333")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sq6js"]
+size = Vector2(56, 163)
+
+[node name="BreakableTiles" type="TileMap"]
+tile_set = SubResource("TileSet_tg8sj")
+format = 2
+layer_0/tile_data = PackedInt32Array(-196609, 0, 0, -131073, 0, 0, -65537, 0, 0, -1, 0, 0, 65535, 0, 0, 131071, 0, 0, 196607, 0, 0, 262143, 0, 0, -262144, 0, 0, -196608, 0, 0, -131072, 0, 0, -65536, 0, 0, 0, 0, 0, 65536, 0, 0, 131072, 0, 0, 196608, 0, 0)
+
+[node name="Area2D" type="Area2D" parent="." groups=["BreakableBySmasher"]]
+position = Vector2(-18, 26)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(18, -22.5)
+shape = SubResource("RectangleShape2D_sq6js")
