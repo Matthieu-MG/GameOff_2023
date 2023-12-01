@@ -41,11 +41,10 @@ public partial class Enemy : CharacterBody2D
 			vel.X = SPEED * _patrol.direction.X;
 		}
 
-		/*
+		
 		if (IsKnockedBack)
 		{
-			//vel.Y = -1500;
-			vel.X = 100 * PlayerMovement.player.GetPlayerTransformScaleX();
+			vel.X = 1000 * PlayerMovement.player.GetPlayerTransformScaleX();
 			IsKnockedBack = false;
 			WasKnockedBack = true;
 		}
@@ -54,7 +53,6 @@ public partial class Enemy : CharacterBody2D
 			vel = Vector2.Zero;
 			WasKnockedBack = false;
 		}
-		*/
 
 		Velocity = vel;
 		MoveAndSlide();

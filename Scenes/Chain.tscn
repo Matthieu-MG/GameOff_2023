@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://8fhynwmvkhqh"]
+
+[ext_resource type="Texture2D" uid="uid://co438co7oq8ul" path="res://icon.svg" id="1_ylcgn"]
+[ext_resource type="Script" path="res://Scripts/Abilities/Chain.cs" id="2_w8oua"]
+
+[node name="Chain" type="Sprite2D" node_paths=PackedStringArray("rayCast2D")]
+texture_repeat = 2
+rotation = -1.5708
+texture = ExtResource("1_ylcgn")
+region_enabled = true
+region_rect = Rect2(0, 0, 125, 0)
+script = ExtResource("2_w8oua")
+rayCast2D = NodePath("RayCast2D")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 1500)

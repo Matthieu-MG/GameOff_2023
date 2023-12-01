@@ -33,6 +33,8 @@ public partial class PlayerMovement : CharacterBody2D
 	double ScaleTimer = 0;
 
 	// Attack Variables
+	bool attackEnded = true;
+	bool IsAttacking = false;
 	[Export] int AtkDamage = 3;
 	[Export] double AtkCooldownTime = 0.4f;
 	double AtkCooldownTimer = -1;
@@ -65,6 +67,10 @@ public partial class PlayerMovement : CharacterBody2D
 	[Export] float dashSpeed = 4000;
 	[Export] float dashDuration = 0.2f;
 	bool DashPressed = false;
+
+	// Wall Grab
+	public bool IsWalled = false;
+	[Export] float wallClimbSpeed = 100f;
 
 	// Jump Variables
 	public static bool isGrounded;
@@ -182,6 +188,24 @@ public partial class PlayerMovement : CharacterBody2D
 				vel.X = dashSpeed * GetPlayerTransformScaleX();
 			}
 			#endregion
+
+			#region WallGrab
+			float wallClimbAxis = Input.GetAxis("Up","Down");
+			GetDir(ref wallClimbAxis);
+			if (IsWalled)
+			{
+				bool WallGrabPressed = Input.IsActionPressed("WallGrab");
+				if(WallGrabPressed && (action == -GetPlayerTransformScaleX() || action == 0))
+				{
+					vel.Y = wallClimbAxis * wallClimbSpeed;
+					vel.X = 0;
+				}
+				else if(action != GetPlayerTransformScaleX())
+				{
+					IsWalled = false;
+				}
+			}
+			#endregion
 		}
 
 		Velocity = vel;
@@ -189,6 +213,7 @@ public partial class PlayerMovement : CharacterBody2D
 		MoveAndSlide();
 	}
 
+	#region Helper Methods and Flip Method
 	private double GetGravity()
 	{
 		if (Velocity.Y < 0.0)
@@ -227,7 +252,7 @@ public partial class PlayerMovement : CharacterBody2D
 
 		MovementInput = 0;
 	}
-	#endregion
+
 	// Returns direction where Player is facing
 	public float GetPlayerTransformScaleX()
 	{
@@ -240,6 +265,25 @@ public partial class PlayerMovement : CharacterBody2D
 			return -1;
 		}
 	}
+
+	#endregion
+	
+	#endregion
+
+	#region WallGrab Signal Methods
+	private void OnWallGrabDetected(Node body)
+	{
+		if(body.IsInGroup("Tiles"))
+		{
+			IsWalled = true;
+		}
+	}
+
+	private void OnWallGrabNotDetected(Node body)
+	{
+		IsWalled = false;
+	}
+	#endregion
 
 	// Handles behaviour when Player wants to scale up or down
 	private void GetScaleInput(ref float ScaleInput, double delta)
@@ -271,14 +315,15 @@ public partial class PlayerMovement : CharacterBody2D
 	// Handles behavior when Player wants to attack
 	private void Attack(double delta)
 	{
-		float IsAttacking = Input.GetActionStrength("Attack");
+		float PressedAttack = Input.GetActionStrength("Attack");
 
-		if (IsAttacking > 0)
+		if (PressedAttack > 0 && !IsAttacking && !_dash.IsDashing())
 		{
-			AtkArea.Monitoring = true;
-			AtkCooldownTimer = AtkCooldownTime;
+			_animSprite.Play("attack");
+			attackEnded = false;
+			IsAttacking = true;
 		}
-		else
+		else if(attackEnded)
 		{
 			AtkArea.Monitoring = false;
 		}
@@ -314,14 +359,15 @@ public partial class PlayerMovement : CharacterBody2D
 
 	private void OnSmashHit(Area2D area)
 	{
-		GD.Print("Signal Trigerred by", area);
 		if (area.IsInGroup("BreakableBySmasher"))
 		{
+			GameManager.gameManager.FrameFreeze(0.3f,0.3f);
 			Node ParentWall = area.GetParent();
 			ParentWall.QueueFree();
 		}
 		if (area.IsInGroup("Hit"))
 		{
+			GameManager.gameManager.FrameFreeze(0.3f,0.3f);
 			HealthComponent health = (HealthComponent) area.GetParent().GetNode("Health Component");
 			health.OnHit(SMASHER_DMG);
 		}
@@ -330,6 +376,7 @@ public partial class PlayerMovement : CharacterBody2D
 
 	#endregion
 
+	#region Bonus Methods
 	// Checks and Assigns correct bonusState depending on the status of the points
 	private void CheckBonusState()
 	{
@@ -379,11 +426,48 @@ public partial class PlayerMovement : CharacterBody2D
 		}
 	}
 
+	// Handles behaviour when player is trying to activate bonus
+	private void PlayerActivateBonus()
+	{
+		float ActivateBonus = Input.GetActionStrength("ActivateBonus");
+		if (ActivateBonus > 0 && bonusState == BonusState.Full)
+		{
+			GD.Print("Pressed To Activate Bonus");
+			BonusActivated = true;
+		}
+	}
+	#endregion
+
 	#region Animation Methods
+	// Signal Method to check if animation from AnimationPlayer is finished
+	private void OnAttackAnimationFinished()
+	{
+		if(_animSprite.Animation == "attack")
+		{
+			IsAttacking = false;
+		}
+		if(_animSprite.Animation == "dash")
+		{
+			IsAttacking = false;
+		}
+	}
+
+	private void OnAttackAnimationFrameChanged()
+	{
+		if (_animSprite.Animation == "attack" && _animSprite.Frame > 3 && _animSprite.Frame < 9)
+		{
+			AtkArea.Monitoring = true;
+		}
+		else
+		{
+			AtkArea.Monitoring = false;
+		}
+	}
+
 	// Handles which Animation the AnimatedSprite2D should play
 	private void HandleAnimation()
 	{
-		if (!_dash.IsDashing())
+		if (!_dash.IsDashing() && !IsAttacking)
 		{
 			if (action == 0)
 			{
@@ -412,23 +496,14 @@ public partial class PlayerMovement : CharacterBody2D
 	}
 	#endregion
 
-	// Handles behaviour when player is trying to activate bonus
-	private void PlayerActivateBonus()
-	{
-		float ActivateBonus = Input.GetActionStrength("ActivateBonus");
-		if (ActivateBonus > 0 && bonusState == BonusState.Full)
-		{
-			BonusActivated = true;
-		}
-	}
-
 	#region Hit methods
 	// Callback method when Hitbox Component detects an Area Enterred and handles Hit behaviour
 	private void OnPlayerHit(Area2D area)
 	{
-		if (area.IsInGroup("Enemy"))
+		if (area.IsInGroup("Enemy") || (area.IsInGroup("Trap") && !isBig) || area.IsInGroup("Damaging"))
 		{
 			IsKnockedBack = true;
+			// _animSprite.Play("knocked_back");
 			GameManager.gameManager.FrameFreeze(0.7f, 0.4f);
 			HealthComponent health = (HealthComponent) GetNode("Health Component");
 			Camera2D.camera.InitiateShake();
@@ -463,7 +538,6 @@ public partial class PlayerMovement : CharacterBody2D
 	// Callback method for when Invincible Frames stop and Player can start taking damage again
 	private void OnIFrameTimerTimeout()
 	{
-		GD.Print("IFrame Stops");
 		_onHitDarkenScreen.Visible = false;
 		IsPlayerIFrameActive = false;
 		HitBox.Monitoring = true;

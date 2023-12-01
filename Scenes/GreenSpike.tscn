@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cv8duvyx7go3k"]
+
+[ext_resource type="Shader" path="res://Shaders/GreenSpike.gdshader" id="1_hlwlf"]
+[ext_resource type="Texture2D" uid="uid://eqpnupjdfktw" path="res://Sprites/GreenSpike.png" id="1_yb643"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7yec"]
+shader = ExtResource("1_hlwlf")
+shader_parameter/speed = 2.5
+shader_parameter/minStrength = 0.25
+shader_parameter/maxStrength = 0.5
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 3.5
+shader_parameter/detail = 1.0
+shader_parameter/distortion = null
+shader_parameter/heightOffset = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g5obl"]
+size = Vector2(42, 44)
+
+[node name="GreenSpike" type="Area2D" groups=["Trap"]]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_x7yec")
+position = Vector2(13, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_yb643")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Trap"]]
+position = Vector2(8, 1)
+shape = SubResource("RectangleShape2D_g5obl")

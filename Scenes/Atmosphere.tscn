@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsch7gowqktjw"]
+[gd_scene load_steps=6 format=3 uid="uid://bsch7gowqktjw"]
+
+[sub_resource type="Curve" id="Curve_3210x"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2y1js"]
+curve = SubResource("Curve_3210x")
 
 [sub_resource type="Curve" id="Curve_5lvja"]
-max_value = 5.0
-_data = [Vector2(0, 0.0320284), 0.0, 1.77056, 0, 0, Vector2(1e-05, 0), 0.0, 0.0, 0, 0, Vector2(0.247967, 5), 0.0, 0.0, 0, 0, Vector2(0.752033, 5), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+max_value = 0.2
+_data = [Vector2(0, 0.0320284), 0.0, 1.77056, 0, 0, Vector2(1e-05, 0), 0.0, 0.0, 0, 0, Vector2(0.431818, 0.112453), 0.0, 0.0, 0, 0, Vector2(0.604545, 0.151698), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 5
 
 [sub_resource type="CurveTexture" id="CurveTexture_m4b8n"]
@@ -18,8 +25,11 @@ gravity = Vector3(0, 98, 0)
 linear_accel_min = 100.0
 linear_accel_max = 100.0
 scale_curve = SubResource("CurveTexture_m4b8n")
+color = Color(0.988235, 0.941176, 0.92549, 1)
+alpha_curve = SubResource("CurveTexture_2y1js")
 
 [node name="Atmosphere" type="GPUParticles2D"]
-amount = 25
+amount = 15
 process_material = SubResource("ParticleProcessMaterial_qr5di")
+lifetime = 2.0
 randomness = 1.0

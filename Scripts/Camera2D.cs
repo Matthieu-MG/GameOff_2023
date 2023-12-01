@@ -21,10 +21,12 @@ public partial class Camera2D : Godot.Camera2D
 	{
 		X_Only,
 		Y_Only,
-		Both
+		Both,
+		Fixed
 	}
 
 	public Follow CameraFollow;
+	[Export] Follow InitialFollowType = Follow.X_Only;
 
 	#endregion
 	
@@ -45,13 +47,16 @@ public partial class Camera2D : Godot.Camera2D
 			camera = this;
 		}
 
-		CameraFollow = Follow.X_Only;
+		CameraFollow = InitialFollowType;
+		pos = Position;
+		pos.Y = _player.Position.Y;
+		Position = pos;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		pos = this.Position;
+		pos = Position;
 
 		/*GD.Print("Shake: ", Shake);
 		GD.Print("Switching: ", IsSwitching);
@@ -123,6 +128,9 @@ public partial class Camera2D : Godot.Camera2D
 				case Follow.Both:
 					pos.X = _player.Position.X;
 					pos.Y = _player.Position.Y;
+					break;
+
+				default:
 					break;
 			}
 		}

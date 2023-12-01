@@ -23,7 +23,7 @@ public partial class Dash : Node2D
 	// Called to initiate Timer and Dash
 	public void StartDash(float duration, Sprite2D sprite)
 	{
-		PlayerMovement.player.IsListeningToInput = false;
+		// PlayerMovement.player.IsListeningToInput = false;
 		this.sprite = sprite;
 		_durationTimer.WaitTime = duration;
 		_durationTimer.Start();
@@ -63,7 +63,7 @@ public partial class Dash : Node2D
 	private void OnDurationTimerTimeout()
 	{
 		EndDash();
-		PlayerMovement.player.IsListeningToInput = true;
+		// PlayerMovement.player.IsListeningToInput = true;
 	}
 
 	// Callback method to create multiple ghost instance in 1 dash

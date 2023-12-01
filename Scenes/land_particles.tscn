@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://xarig44bl8mo"]
+
+[sub_resource type="Curve" id="Curve_d51aq"]
+max_value = 10.0
+_data = [Vector2(0, 10), 0.0, 0.0, 0, 0, Vector2(0.477273, 5.01887), 0.0, 0.0, 0, 0, Vector2(1, 0.245283), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_vbpx5"]
+curve = SubResource("Curve_d51aq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tc2mt"]
+lifetime_randomness = 0.53
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 75.76
+initial_velocity_max = 75.76
+angular_velocity_min = 720.0
+angular_velocity_max = 720.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 100.0
+linear_accel_max = 100.0
+scale_curve = SubResource("CurveTexture_vbpx5")
+collision_mode = 2
+
+[node name="LandParticles" type="GPUParticles2D"]
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_tc2mt")
+lifetime = 2.5
+explosiveness = 1.0
+randomness = 1.0

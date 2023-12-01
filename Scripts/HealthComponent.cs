@@ -66,8 +66,11 @@ public partial class HealthComponent : Node2D
 		else if(IsInGroup("Enemy"))
 		{
 			// GameManager.gameManager.FrameFreeze(0.7f, 0.1f);
-			Enemy enemy = (Enemy) parentCharacter;
-			enemy.IsKnockedBack = true;
+			if(parentCharacter is Enemy)
+			{
+				Enemy enemy = (Enemy) parentCharacter;
+				enemy.IsKnockedBack = true;
+			}
 		}
 		
 		// Flash Sprite White

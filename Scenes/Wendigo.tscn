@@ -1,0 +1,410 @@
+[gd_scene load_steps=35 format=3 uid="uid://dd7h7t2o4imt7"]
+
+[ext_resource type="Texture2D" uid="uid://dre7n1mh3e1ro" path="res://Sprites/Animations/idleAnimationProtagonistSprite.png" id="1_aqiyr"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/Wendigo.cs" id="1_qdsty"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoFSM.cs" id="2_2ycr0"]
+[ext_resource type="Shader" uid="uid://cytefjyndg6yw" path="res://Shaders/HitFlash.tres" id="2_m7e37"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoIdleState.cs" id="3_jtt4c"]
+[ext_resource type="PackedScene" uid="uid://5h4ob2dm67nu" path="res://Scenes/Dash.tscn" id="5_5855l"]
+[ext_resource type="Script" path="res://Scenes/WendigoJumpState.cs" id="5_kh64d"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoHorizontalDashState.cs" id="5_wrbnf"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoAttackState.cs" id="7_05xdd"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoGoToPointState.cs" id="8_535h5"]
+[ext_resource type="Texture2D" uid="uid://co438co7oq8ul" path="res://icon.svg" id="9_ni6o0"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoThrowState.cs" id="9_prbw2"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoFourPointDashState.cs" id="10_ndlq7"]
+[ext_resource type="Script" path="res://Scripts/Wendigo/WendigoVerticalDashState.cs" id="11_d7og8"]
+[ext_resource type="PackedScene" uid="uid://bvmcgiv5f73gh" path="res://Scenes/health_component.tscn" id="15_7s1tc"]
+[ext_resource type="PackedScene" uid="uid://2nhx70jkd3c4" path="res://Scenes/hitbox_component.tscn" id="16_66snq"]
+[ext_resource type="PackedScene" uid="uid://cgesp8n8o4n6b" path="res://Scenes/snow_shockwave.tscn" id="17_vbc2g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fhke"]
+size = Vector2(445, 523)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lb3ye"]
+shader = ExtResource("2_m7e37")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_mcw22"]
+resource_name = "Attack_1"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Atk_1:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Atk_1/Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Atk_1:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_d8oxx"]
+resource_name = "Attack_2"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Atk_2:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Atk_2/Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Atk_2:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_f85qv"]
+resource_name = "Attack_3"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Atk_3:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Atk_3/Sprite2D:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [false, true, true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Atk_3:monitorable")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_qiovd"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 3, 4, 5, 5]
+}
+
+[sub_resource type="Animation" id="Animation_awltp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3g83j"]
+_data = {
+"Attack_1": SubResource("Animation_mcw22"),
+"Attack_2": SubResource("Animation_d8oxx"),
+"Attack_3": SubResource("Animation_f85qv"),
+"Idle": SubResource("Animation_qiovd"),
+"RESET": SubResource("Animation_awltp")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oi1t8"]
+size = Vector2(647, 138)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_531t5"]
+size = Vector2(655, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5v2si"]
+size = Vector2(288, 527)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dedl6"]
+size = Vector2(666, 195)
+
+[sub_resource type="Animation" id="Animation_kylew"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_4btij"]
+resource_name = "hitFlash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wmbbj"]
+_data = {
+"RESET": SubResource("Animation_kylew"),
+"hitFlash": SubResource("Animation_4btij")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8uqmh"]
+size = Vector2(210, 444)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xhr00"]
+size = Vector2(640, 152)
+
+[node name="Wendigo" type="CharacterBody2D" node_paths=PackedStringArray("snowShockwave", "snowShockwave2")]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_qdsty")
+snowShockwave = NodePath("SnowShockwave")
+snowShockwave2 = NodePath("SnowShockwave2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(12.5, -29.5)
+shape = SubResource("RectangleShape2D_3fhke")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0.952941, 0.807843, 1)
+material = SubResource("ShaderMaterial_lb3ye")
+texture = ExtResource("1_aqiyr")
+hframes = 6
+frame = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3g83j")
+}
+
+[node name="FSM" type="Node2D" parent="." node_paths=PackedStringArray("wendigoBody", "animPlayer", "sprite", "wendigoIdleState", "wendigoHorizontalDashState", "wendigoJumpState", "wendigoAttackState", "wendigoGoToPointState", "wendigoThrowState", "wendigoFourPointDashState", "wendigoVerticalDashState")]
+script = ExtResource("2_2ycr0")
+wendigoBody = NodePath("..")
+animPlayer = NodePath("../AnimationPlayer")
+sprite = NodePath("../Sprite2D")
+wendigoIdleState = NodePath("Idle")
+wendigoHorizontalDashState = NodePath("HorizontalDash")
+wendigoJumpState = NodePath("Jump")
+wendigoAttackState = NodePath("Attack")
+wendigoGoToPointState = NodePath("GoToPoint")
+wendigoThrowState = NodePath("Throw")
+wendigoFourPointDashState = NodePath("FourPointDash")
+wendigoVerticalDashState = NodePath("VerticalDash")
+
+[node name="Idle" type="Node" parent="FSM" node_paths=PackedStringArray("Shockwave")]
+script = ExtResource("3_jtt4c")
+Shockwave = NodePath("../../LandingShockwave")
+
+[node name="HorizontalDash" type="Node" parent="FSM" node_paths=PackedStringArray("_dash")]
+script = ExtResource("5_wrbnf")
+_dash = NodePath("../../Dash")
+dashSpeed = 7500.0
+
+[node name="Jump" type="Node" parent="FSM"]
+script = ExtResource("5_kh64d")
+
+[node name="Attack" type="Node" parent="FSM"]
+script = ExtResource("7_05xdd")
+
+[node name="GoToPoint" type="Node" parent="FSM"]
+script = ExtResource("8_535h5")
+
+[node name="Throw" type="Node" parent="FSM" node_paths=PackedStringArray("ThrowObject")]
+script = ExtResource("9_prbw2")
+ThrowObject = NodePath("../../Throwable")
+
+[node name="FourPointDash" type="Node" parent="FSM"]
+script = ExtResource("10_ndlq7")
+
+[node name="VerticalDash" type="Node" parent="FSM"]
+script = ExtResource("11_d7og8")
+
+[node name="Dash" parent="." instance=ExtResource("5_5855l")]
+
+[node name="Atk_1" type="Area2D" parent="." groups=["Damaging"]]
+position = Vector2(449, -212)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atk_1"]
+position = Vector2(33.5, 3)
+shape = SubResource("RectangleShape2D_oi1t8")
+
+[node name="Sprite2D" type="Sprite2D" parent="Atk_1"]
+visible = false
+modulate = Color(1, 0.219608, 0.282353, 1)
+position = Vector2(38, 2)
+scale = Vector2(5, 1)
+texture = ExtResource("9_ni6o0")
+
+[node name="Atk_2" type="Area2D" parent="." groups=["Damaging"]]
+position = Vector2(471, -34)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atk_2"]
+position = Vector2(14.5, 1)
+shape = SubResource("RectangleShape2D_531t5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Atk_2"]
+visible = false
+modulate = Color(1, 0.219608, 0.282353, 1)
+position = Vector2(18, 2)
+scale = Vector2(5.01563, 0.929688)
+texture = ExtResource("9_ni6o0")
+
+[node name="Atk_3" type="Area2D" parent="." groups=["Damaging"]]
+position = Vector2(432, 0)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Atk_3"]
+position = Vector2(-119, -37)
+shape = SubResource("RectangleShape2D_5v2si")
+
+[node name="Sprite2D" type="Sprite2D" parent="Atk_3"]
+visible = false
+modulate = Color(1, 0.219608, 0.282353, 1)
+position = Vector2(-118, -32)
+scale = Vector2(2.16797, 4.10938)
+texture = ExtResource("9_ni6o0")
+
+[node name="Throwable" type="Area2D" parent="." groups=["Damaging"]]
+visible = false
+position = Vector2(489, -62)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Throwable"]
+position = Vector2(8, -0.5)
+shape = SubResource("RectangleShape2D_dedl6")
+
+[node name="Sprite2D" type="Sprite2D" parent="Throwable"]
+modulate = Color(1, 0.219608, 0.282353, 1)
+position = Vector2(14.5, -2)
+scale = Vector2(5.28906, 1.51172)
+texture = ExtResource("9_ni6o0")
+
+[node name="Health Component" parent="." node_paths=PackedStringArray("_hitFlash") groups=["Enemy"] instance=ExtResource("15_7s1tc")]
+MaxHealth = 50
+_hitFlash = NodePath("../HitFlash")
+
+[node name="HitFlash" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wmbbj")
+}
+
+[node name="Hitbox Component" parent="." groups=["Enemy", "Hit"] instance=ExtResource("16_66snq")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Component"]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_8uqmh")
+
+[node name="LandingShockwave" type="Area2D" parent="." groups=["Damaging"]]
+visible = false
+position = Vector2(0, 194)
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LandingShockwave"]
+position = Vector2(-9, -48)
+shape = SubResource("RectangleShape2D_xhr00")
+
+[node name="Sprite2D2" type="Sprite2D" parent="LandingShockwave"]
+modulate = Color(1, 0.219608, 0.282353, 1)
+position = Vector2(-4.50002, -43)
+scale = Vector2(4.85156, 1.14062)
+texture = ExtResource("9_ni6o0")
+
+[node name="SnowShockwave" parent="." instance=ExtResource("17_vbc2g")]
+
+[node name="SnowShockwave2" parent="." instance=ExtResource("17_vbc2g")]
+position = Vector2(-146, 162)
+IsRight = false

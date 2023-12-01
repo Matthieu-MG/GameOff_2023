@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b67glc2lr7tco"]
 
-[ext_resource type="Script" path="res://Scripts/Smasher.cs" id="1_4gf30"]
+[ext_resource type="Script" path="res://Scripts/Abilities/Smasher.cs" id="1_4gf30"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ugbnp"]
 size = Vector2(172, 209)

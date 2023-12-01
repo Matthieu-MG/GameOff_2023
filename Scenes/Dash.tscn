@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://5h4ob2dm67nu"]
 
-[ext_resource type="Script" path="res://Scripts/Dash.cs" id="1_vf0ly"]
+[ext_resource type="Script" path="res://Scripts/Abilities/Dash.cs" id="1_vf0ly"]
 
 [node name="Dash" type="Node2D" node_paths=PackedStringArray("_durationTimer", "_ghostTimer")]
 script = ExtResource("1_vf0ly")

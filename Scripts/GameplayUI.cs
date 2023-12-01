@@ -14,12 +14,16 @@ public partial class GameplayUI : Control
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		_BonusProgressBar.Value = PlayerMovement.BonusBar;
+		if(!PlayerMovement.BonusActivated)
+			_BonusProgressBar.Value = PlayerMovement.BonusBar;
 
 		if (PlayerMovement.BonusActivated)
 		{
+			GD.Print("Lerping Bar");
 			_t += (float) (0.001f * delta);
-			PlayerMovement.BonusBar = Mathf.Lerp(PlayerMovement.BonusBar, 0.0f, _t);
+			PlayerMovement.BonusBar = Mathf.Lerp(PlayerMovement.BonusBar, 0, _t);
+			_BonusProgressBar.Value = PlayerMovement.BonusBar;
+			GD.Print("Bonus Bar Value",_BonusProgressBar.Value);
 		}
 		else if (_BonusProgressBar.Value >= 100)
 		{
